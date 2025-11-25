@@ -27,3 +27,9 @@ npm i axios
 php artisan migrate --seed
 ```
 7. Запрос на получение токена и приватный эндпоинт
+
+8. Установить Bootstrap CSS
+```
+npm i bootstrap@5.3.8
+```
+9. Реализация аутентификации
