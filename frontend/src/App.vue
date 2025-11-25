@@ -1,11 +1,49 @@
-<script setup></script>
+<script setup>
+import axios from 'axios'
+
+axios.defaults.withCredentials = true
+axios.defaults.withXSRFToken = true
+axios.defaults.baseURL = 'http://localhost:8080'
+
+const login = () => {
+  axios.get('/sanctum/csrf-cookie')
+    .then(() => {
+      return axios.post('/api/login', {
+        email: 'admin@mail.com',
+        password: 'password',
+      });
+    })
+    .then(response => {
+      console.log('Login:', response);
+    })
+    .catch(error => {
+      console.error('Login error:', error.response?.data?.message);
+    });
+}
+
+const info = () => {
+  axios.get('/api/user')
+    .then(response => {
+      console.log('User info:', response);
+    })
+    .catch(error => {
+      console.error('Info error:', error);
+    });
+}
+
+const logout = () => {
+  axios.post('/api/logout')
+    .then(response => {
+      console.log('Logout:', response);
+    })
+    .catch(error => {
+      console.error('Logout error:', error);
+    });
+}
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <button @click="login">logIn</button>
+  <button @click="info">Info</button>
+  <button @click="logout">logOut</button>
 </template>
-
-<style scoped></style>
