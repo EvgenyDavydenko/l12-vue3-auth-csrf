@@ -9,10 +9,11 @@ const validationErrors = ref({})
 export default function useAuth() {
 
   const getUser = async () => {
+    errorMessage.value = ''
+
     try {
       const response = await axios.get('/api/user')
       user.value = response.data
-      errorMessage.value = ''
     } catch (e) {
       user.value = null
       errorMessage.value = 'Не удалось получить данные пользователя'
@@ -30,7 +31,6 @@ export default function useAuth() {
       await getUser()
       return true
     } catch (e) {
-      // Универсальная обработка ошибок
       if (e.response?.status === 422) {
         // Ошибки валидации
         validationErrors.value = e.response.data.errors || {}
@@ -46,11 +46,11 @@ export default function useAuth() {
   }
 
   const logout = async () => {
+    errorMessage.value = ''
+
     try {
       await axios.post('/api/logout')
       user.value = null
-      errorMessage.value = ''
-      validationErrors.value = {}
     } catch (e) {
       errorMessage.value = 'Ошибка выхода'
     }
